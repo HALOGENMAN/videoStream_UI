@@ -3,14 +3,22 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NavComponent } from './common/components/nav/nav.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HomepageComponent } from './homepage/homepage.component';
+import { VideoComponent } from './common/components/video/video.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavComponent,
+    HomepageComponent,
+    VideoComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [
     provideClientHydration(withEventReplay())
