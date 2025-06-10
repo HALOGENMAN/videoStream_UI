@@ -25,6 +25,11 @@ export class LoginSignUpComponent {
       this.loginSignUpService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login successful:', response);
+          sessionStorage.setItem('token', response.data.token);
+          sessionStorage.setItem('id', response.data.id);
+          sessionStorage.setItem('username', response.data.username);
+          sessionStorage.setItem('email', response.data.email);
+
           // Handle successful login here, e.g., redirect to homepage
         },
         error: (error) => {

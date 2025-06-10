@@ -15,6 +15,6 @@ export class LoginSignUpService {
     this.configs = this.configService.getConfigs().endpoints;
   }
   login(payload:any):Observable<any> {
-    return this.http.post(this.configs.login, payload);
+    return this.http.post(this.configs.login, payload); 
   }
 }
