@@ -12,9 +12,11 @@ export class LoginSignUpService {
     private http:BaseService,
     private configService: LoadConfigsService
   ) {
-    this.configs = this.configService.getConfigs().endpoints;
+    this.configs = this.configService.getConfigs()?.endpoints;
   }
   login(payload:any):Observable<any> {
     return this.http.post(this.configs.login, payload); 
   }
+
+  
 }

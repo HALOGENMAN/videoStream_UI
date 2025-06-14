@@ -10,15 +10,16 @@ import { catchError } from 'rxjs/operators';
 })
 export class BaseService {
   baseUrl:string = environment.baseUrl
-
+  configs: any;
   private defaultHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json'
     // 'Authorization': 'Bearer YOUR_AUTH_TOKEN' // Uncomment and set if you have auth
   });
 
-  constructor(private http: HttpClient) { 
-    // console.log("Base URL: ", this.baseUrl);
+  constructor(
+    private http: HttpClient,
+  ) { 
   }
 
   /**
@@ -36,17 +37,17 @@ export class BaseService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${JSON.stringify(error.error)}`
+        `Backend returned code ${error?.status}, ` +
+        `body was: ${JSON.stringify(error?.error)}`
       );
-      if (error.status === 0) {
-        errorMessage = 'Network error or CORS issue. Please check your API server.';
-      } else {
-        errorMessage = `Server error (Status: ${error.status}): ${error.error.message || JSON.stringify(error.error)}`;
-      }
+      // if (error.status === 0) {
+      //   errorMessage = 'Network error or CORS issue. Please check your API server.';
+      // } else {
+      //   errorMessage = `Server error (Status: ${error.status}): ${error.error.message || JSON.stringify(error.error)}`;
+      // }
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error(errorMessage));
+    return throwError(() => error);
   }
 
   get<T>(path: string, options?: { headers?: HttpHeaders, params?: any }): Observable<T> {
@@ -93,6 +94,13 @@ export class BaseService {
     return this.http.delete<T>(url, httpOptions).pipe(
       catchError(this.handleError)
     );
+  }
+
+  refreshToken():Observable<any> {
+    return this.post('/v1/auth/refreshToken',{
+      token: sessionStorage.getItem('refreshToken'),
+      id: Number.parseInt(sessionStorage.getItem('id')?? '-1')
+    }); 
   }
 
   addDefaultHeader(key: string, value: string): void {

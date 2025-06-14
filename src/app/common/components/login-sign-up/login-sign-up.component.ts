@@ -26,6 +26,7 @@ export class LoginSignUpComponent {
         next: (response) => {
           console.log('Login successful:', response);
           sessionStorage.setItem('token', response.data.token);
+          sessionStorage.setItem('refreshToken', response.data.refreshToken);
           sessionStorage.setItem('id', response.data.id);
           sessionStorage.setItem('username', response.data.username);
           sessionStorage.setItem('email', response.data.email);

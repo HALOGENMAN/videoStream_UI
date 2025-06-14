@@ -13,14 +13,16 @@ import { BaseService } from './servide/base.service';
 import { LoginSignUpService } from './servide/login-sign-up.service';
 import { LoadConfigsService } from './servide/load-configs.service';
 import { LoadLablesService } from './servide/load-lables.service';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth.interceptor';
+import { Observable } from 'rxjs';
 
 const initializeLables = ():Promise<any> => {
   const labelsService = inject(LoadLablesService);
   return labelsService.loadLables(); 
 }
 
-const initializeConfigs = ():Promise<any> => {
+const initializeConfigs = ():Observable<any> => {
   const configService = inject(LoadConfigsService);
   return configService.loadConfigs()
 }
@@ -41,11 +43,12 @@ const initializeConfigs = ():Promise<any> => {
   ],
   providers: [
     // provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()),
     provideHttpClient(),
     provideAppInitializer(() => initializeLables()),
     provideAppInitializer(() => initializeConfigs()),
-  
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
     BaseService,
     LoginSignUpService,
     LoadLablesService,

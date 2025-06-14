@@ -1,6 +1,7 @@
 {
   "endpoints":{
     "login":"/v1/auth/login",
-    "logout":"/v1/auth/logout"
+    "logout":"/v1/auth/logout",
+    "refreshToken":"/v1/auth/refreshToken"
   }
 }

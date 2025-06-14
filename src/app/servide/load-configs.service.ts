@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { map, Observable, Subject} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -12,24 +12,16 @@ export class LoadConfigsService {
   constructor(
     private http: HttpClient,
   ) {
-    this.configSubject.subscribe((value) => {
-      this.configs = value;
-    });
+    
   }
 
-  loadConfigs(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http.get(this.url).subscribe({
-        next: (data) => {
-          this.configSubject.next(data)
-          resolve(this.configs);
-        },
-        error: (error) => {
-          console.error('Error loading labels:', error);
-          reject(error);
-        },
-      });
-    });
+  loadConfigs(): Observable<any> {
+    return this.http.get(this.url).pipe(
+      map(data => {
+        this.configs = data;
+        return data;
+      })        
+    );
   }
 
   getConfigs(): any {
